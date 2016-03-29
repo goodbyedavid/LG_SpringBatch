@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">        
+
+    <context:component-scan base-package="com.rovicorp" />
+    
+	<!-- stored job-meta in memory --> 
+	<bean id="jobRepository"
+		class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+ 	
+	<bean id="transactionManager"
+		class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+	 
+	<bean id="jobLauncher"
+		class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+	
+	<bean class="org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor">
+	      <property name="jobRegistry" ref="jobRegistry" />
+    </bean>
+ 
+     <bean id="jobRegistry" class="org.springframework.batch.core.configuration.support.MapJobRegistry" />
+
+     <bean class="org.springframework.batch.test.JobLauncherTestUtils"/>
+     
+     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	        <property name="locations">
+	        <list>
+	            <value>file:/opt/rovi_base/conf/comcast-dpi21/application.properties</value>
+	        </list>
+	        </property>
+	 </bean>
+	 
+	 <!--  this is only used for the test case. Its a hyper sql database that is non persistent. In the regular project
+	 the datasource is defined in the databases.xml file.  -->
+	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+      <!-- <property name="url" value="jdbc:hsqldb:file:src/test/resources/db/testdb" /> -->
+      <property name="url" value="jdbc:hsqldb:mem:testdb" />
+      <property name="username" value="sa" />
+      <property name="password" value="" />
+    </bean>
+     
+</beans>

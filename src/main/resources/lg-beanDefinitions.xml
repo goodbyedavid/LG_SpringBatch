@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+	">
+
+	<!-- using simple async task executor -->
+	<bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor">
+		<property name="concurrencyLimit" value="15"/>
+	</bean>
+	
+	<bean id="lgJobListener" class="com.rovicorp.job.listeners.RoviMultiRunJobListener">
+		<property name="folderToLogFailedJobs" value="${lgExtract.folder.to.log.failed.zipcodes.location}" />
+		<property name="jobParameterNameForFileName" value="zipcode"></property>
+	</bean>
+	
+	<!-- start end time bean -->
+	<bean id="LgDataFeedResetDatesBean" class="com.rovicorp.tasklets.LGExtractBootStrapTasklet">
+    	<property name="resetStartEndTime" value = "1"></property>
+        <property name="extractScheduleDuration" value="${lgExtract.schedule.duration}" />
+	</bean>
+	
+	<bean id="LgCreateFolderStructureBean" class="com.rovicorp.tasklets.RoviCreateFolderStructureTasklet" scope="step">
+		<property name="baseFolder" value="${lgExtract.base.directory.location}"></property>
+		<property name="foldersToBeCreated">
+			<list>
+		        <value>#{jobParameters['zipcode']}/clu</value>
+		        <value>#{jobParameters['zipcode']}/ss</value>
+				<value>#{jobParameters['zipcode']}/package</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- This tasklet delets previous day zip files from the directory -->
+	<bean id="lgCleanPreviousDayFilesBean" class="com.rovicorp.tasklets.RemoveFilesUnderDirectoryTasklet" scope="step">
+		<property name="directory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package"/>
+	</bean>
+	
+	<!-- truncate LG association table and start over -->
+	<!-- Headend -->
+	<bean id="lgHeadendTruncateAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+		<property name="dataSource" ref="dataSource" />
+	    <property name="sql">
+	    <value>
+	    	<![CDATA[
+            		--if table exists then truncate it else create it
+                    IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}') IS NOT NULL
+                    	--Truncate table
+                    	TRUNCATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}
+                    ELSE
+                   		BEGIN
+                    		--create table 
+                        	CREATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}(value BIGINT)
+                        	-- Created index on temp table to improve performance 
+                        	CREATE INDEX LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}_ndx ON ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}(value)
+						END
+			]]>
+		</value>
+		</property>
+	</bean>
+
+	<!-- Source -->	
+	<bean id="lgSourceTruncateAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+                		--if table exists then truncate it else create it
+                        IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}') IS NOT NULL
+                        	--Truncate table
+                            TRUNCATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}
+						ELSE
+                        	BEGIN
+                            	--create table 
+								CREATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}(value BIGINT)
+								-- Created index on temp table to improve performance 
+								CREATE INDEX LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}_ndx ON ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}(value)
+							END
+				]]>
+			</value>
+		</property>
+	</bean>
+       
+	<!-- Program -->	
+	<bean id="lgProgramTruncateAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+                		--if table exists then truncate it else create it
+                        IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}') IS NOT NULL
+                        	--Truncate table
+                            TRUNCATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}
+						ELSE
+                        	BEGIN
+                            	--create table 
+                                CREATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}(value BIGINT)
+                                -- Created index on temp table to improve performance 
+                                CREATE INDEX LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}_ndx ON ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}(value)
+							END
+				]]>
+			</value>
+		</property>
+	</bean>
+
+	<!-- truncate LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}s table and start over -->
+    <bean id="lgTruncateAssociationListOfProgramCopyCuttingPositionsBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+						--if table exists then truncate it else create it
+                        IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}') IS NOT NULL
+                        	--Truncate table
+                            TRUNCATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}
+						ELSE
+                        	BEGIN
+                            	--create table 
+                                CREATE TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}(program_copy_id BIGINT, LIST VARCHAR(MAX))
+                                -- Created index on temp table to improve performance 
+                                CREATE INDEX LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}_ndx ON ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}(program_copy_id)
+						END
+				]]>
+			</value>
+		</property>
+	</bean>
+	
+	<!-- populating the headend association -->
+	<bean id="lgHeadendAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+		<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+						INSERT INTO ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}
+						SELECT DISTINCT headend_id AS Value
+						FROM [Prism].[dbo].[headend_zipcodes] hz
+						INNER JOIN [Prism].[dbo].[customer] c ON c.cust_headend_id = hz.headend_id
+						WHERE hz.zipcode = #{jobParameters['zipcode']} AND (c.cust_psa_country = 'USA' or c.cust_psa_country = 'United States') AND  c.CUST_SERVICE_TYPE IN ('TVGO', 'TVGI', 'TVGC', 'TVGL') AND CUST_SERVICE_STATUS = 3 												
+						
+						DELETE a FROM ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} a JOIN prism.dbo.customer c ON c.cust_headend_id = a.value WHERE c.cust_service_id = 83533
+						DELETE a FROM ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} a JOIN prism.dbo.customer c ON c.cust_headend_id = a.value WHERE c.cust_mso_id IN (301467, 300719) AND c.cust_service_id <> 80618
+					]]>
+				</value>
+		</property>
+	</bean>
+	
+	<!-- populating the headend association -->
+	<bean id="lgDataFeedHeadEndTopLevelFilterFromUsersBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+		<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+						DECLARE @String VARCHAR(8000), @Delimiter CHAR(1)
+						DECLARE @temptable TABLE (items VARCHAR(8000))
+						SET @String = '#{jobParameters['headendsList']}'
+						SET @Delimiter = ', '
+						DECLARE @idx INT
+						DECLARE @slice VARCHAR(8000)
+						SELECT @idx = 1
+						IF len(@String)<1 OR @String IS NULL  RETURN
+						while @idx!= 0
+						BEGIN
+							SET @idx = charindex(@Delimiter,@String)
+							IF @idx!=0
+								SET @slice = LEFT(@String,@idx - 1)
+							ELSE
+								SET @slice = @String
+							IF(len(@slice)>0)
+								INSERT INTO @temptable(Items) VALUES(@slice)
+							SET @String = RIGHT(@String,len(@String) - @idx)
+							IF len(@String) = 0 break
+						END
+						
+						INSERT INTO ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}
+						SELECT * FROM @temptable
+					]]>
+				</value>
+		</property>
+	</bean>
+	
+	<!-- populating the Source association -->
+	<bean id="lgSourceAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[	
+                		--There is a problematic souce id 20800. It comes in the prism table. Dan's option on this was to leave it. We will leave it for now unless QA raise issue on it.
+						SELECT DISTINCT pc.cust_headend_id [headend_id], s.source_id [source_id]
+						INTO #siloCLUtemp
+						FROM [Prism].[dbo].[customer] pc
+						JOIN [Prism].[dbo].[channel_line_up] clu ON clu.cust_service_id = pc.cust_service_id AND clu.clu_del_flag = 'N' AND clu_eff_date <= DATEADD(second,-1,DATEADD(day, 45, CONVERT(DATETIME, CONVERT(VARCHAR(10), GETDATE(), 101)))) AND clu_end_date >= DATEADD(day, -5, CONVERT(DATETIME, CONVERT(VARCHAR(10), GETDATE(), 101)))
+						JOIN [Staging].[dbo].[source_tv] s ON s.source_id = clu.source_id
+						WHERE pc.cust_service_status = 3 AND pc.cust_service_type IN ('TVGO', 'TVGI','TVGC','TVGL') AND s.is_internal_source = 0
+						
+						INSERT INTO #siloCLUtemp
+						SELECT DISTINCT h.cust_headend_id, c.source_id   
+						FROM [Prism].[dbo].[customer] h
+						JOIN [Cosmos].[dbo].[gbl_system] s ON s.cs_id = h.cust_system_id AND s.customer_class = 'DB' and s.archived_yn = 'N' and s.system_status = 2
+						JOIN [Prism].[dbo].[customer] h2 ON h2.cust_mso_id=h.cust_mso_id AND h.gmt_offset_id=h2.gmt_offset_id AND h2.cust_psa_state='na'
+						JOIN #siloCLUtemp c ON c.headend_id=h2.cust_headend_id 
+						WHERE h.cust_psa_state!='na' AND h.cust_date_inactivated is null AND h.cust_service_status = 3 AND h.cust_service_type IN ('TVGO', 'TVGI','TVGC','TVGL')
+						
+						INSERT INTO ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}
+						SELECT DISTINCT c.source_id AS Value
+						FROM ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} fr
+						JOIN #siloCLUtemp c ON c.headend_id=fr.value
+						
+						DROP TABLE #siloCLUtemp							
+				]]>
+			</value>
+		</property>
+	</bean>
+	
+	<!-- populating the Programs association -->
+	<bean id="lgProgramAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+        	<value>
+            	<![CDATA[										
+						INSERT INTO ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}
+						SELECT DISTINCT s.program_id AS Value
+						FROM ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']} ts
+						JOIN Staging.dbo.schedule s ON s.source_id = ts.value
+						WHERE s.is_active = 1 AND s.duration_in_seconds > 0 AND s.air_date_time >= CONVERT(DATETIME, CONVERT(VARCHAR(10), GETDATE(), 101)) AND s.air_date_time < DATEADD(second,-1,DATEADD(day, 14, CONVERT(DATETIME, CONVERT(VARCHAR(10), GETDATE(), 101))))   
+				]]>
+			</value>
+		</property>
+	</bean>
+	
+    <bean id="lgProgramDeleteSeasonsAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[	
+                		DELETE p 
+						FROM ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} p
+						JOIN Staging.dbo.program_base pb ON pb.program_id = p.value
+						JOIN Staging.dbo.program_type_ref ptr ON ptr.program_type_id = pb.program_type_id
+						WHERE ptr.program_type_name = 'Season'  
+				]]>
+			</value>
+		</property>
+	</bean>		       	
+	
+	<bean id="lgListOfProgramCopyCuttingPositionsTopLevelFilterBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource"></property>
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+						INSERT INTO ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}
+						SELECT a.program_copy_id, LIST = STUFF((SELECT ', ' + convert(VARCHAR, b.cutting_position_value)
+							FROM Staging.dbo.program_copy_cutting_position b 
+							WHERE b.program_copy_id = a.program_copy_id
+							ORDER BY b.cutting_position_value
+							FOR XML PATH('')), 1, 2, '')
+						FROM Staging.dbo.program_copy_cutting_position a
+						JOIN Staging.dbo.program_copy pc ON pc.program_copy_id = a.program_copy_id
+						JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} CAP ON CAP.value = pc.program_id
+						GROUP BY a.program_copy_id
+				]]>
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="loadRatingNamesBean" class="com.rovicorp.tasklets.ProgramRatingsTasklet">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+                		SELECT rating_id, name FROM Staging.dbo.rating_ref rr WHERE rating_type_id IN (1, 2, 3, 5, 6, 10)
+				]]>
+			</value>
+		</property>
+		<property name="stepName" value="loadRatingNames" />
+	</bean>
+	
+	<!-- Load ProgramColorTypes into an Object -->
+	<bean id="loadProgramColorTypesBean" class="com.rovicorp.tasklets.ColorTypeTasklet">
+    	<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+        	<value>
+            	<![CDATA[
+               			SELECT program_color_type_id, program_color_type_value FROM Staging.dbo.program_color_type_ref 
+				]]>
+			</value>
+		</property>
+        <property name="stepName" value="loadRatingNames" />
+	</bean>
+	
+	<!-- Below are the common beans that will probably be included in every project. -->		
+	<bean id="lgCLUSourceFileCopyBean" class="com.rovicorp.tasklets.FileMoverTasklet" scope="step">
+		<property name="sourceFile" value="Source.txt" />
+		<property name="sourceDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/clu" />
+		<property name="destinationDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/ss" />
+		<property name="isLarge" value="${lgExtract.package.zip.name.islarge}" />
+	</bean>
+	
+	<bean id="lgCLUSetZipFileNameBean" class="com.rovicorp.tasklets.RoviResetPackageDetails" scope="step">
+		<property name="zipFileNameBeforeDateTime" value="#{jobParameters['defaultZipFileName']}${lgExtract.clu.package.zip.fileNameBeforeDateTime}" />
+		<property name="zipFileNameDateTimeFormat" value="${lgExtract.clu.package.zip.fileNameDateTimeFormat}" />
+		<property name="zipFileNameAfterDateTime" value="${lgExtract.clu.package.zip.fileNameAfterDateTime}" />
+		<property name="zipFileFormat" value="${lgExtract.clu.package.zip.fileFormat}" />
+		<property name="zipFileAppendFullForFullFile" value="${lgExtract.clu.package.zip.zipFileAppendFullForFullFile}" />
+		<property name="zipFileAppendDeltaForDeltaFile" value="${lgExtract.clu.package.zip.zipFileAppendDeltaForDeltaFile}" />
+		<property name="packageName" value="${lgExtract.clu.packageName}_#{jobParameters['zipcode']}" />
+		<property name="deltaPackage" value="false" />
+		<property name="deltaExpression" value="DAILY:*|WEEKLYFULL:*|MONTHLYFULL:*" />
+		<property name="zipFileDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+	</bean>
+	
+	<bean id="lgSSSetZipFileNameBean" class="com.rovicorp.tasklets.RoviResetPackageDetails" scope="step">
+		<property name="zipFileNameBeforeDateTime" value="#{jobParameters['defaultZipFileName']}${lgExtract.ss.package.zip.fileNameBeforeDateTime}" />
+		<property name="zipFileNameDateTimeFormat" value="${lgExtract.ss.package.zip.fileNameDateTimeFormat}" />
+		<property name="zipFileNameAfterDateTime" value="${lgExtract.ss.package.zip.fileNameAfterDateTime}" />
+		<property name="zipFileFormat" value="${lgExtract.ss.package.zip.fileFormat}" />
+		<property name="zipFileAppendFullForFullFile" value="${lgExtract.ss.package.zip.zipFileAppendFullForFullFile}" />
+		<property name="zipFileAppendDeltaForDeltaFile" value="${lgExtract.ss.package.zip.zipFileAppendDeltaForDeltaFile}" />
+		<property name="packageName" value="${lgExtract.ss.packageName}_#{jobParameters['zipcode']}" />
+		<property name="deltaPackage" value="false"></property>
+		<property name="deltaExpression" value="DAILY:*|WEEKLYFULL:*|MONTHLYFULL:*"></property>
+		<property name="zipFileDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+	</bean>
+	
+	<!-- This tasklet bean compresses/zips a set of files -->
+	<bean id="lgCLUCompressorTaskletBean" class="com.rovicorp.tasklets.CompressorTasklet" scope="step">
+		<property name="sourceDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/clu" />
+		<property name="destinationDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+		<property name="packageName" value="${lgExtract.clu.packageName}_#{jobParameters['zipcode']}" />
+	</bean>
+	
+	<bean id="lgSSCompressorTaskletBean" class="com.rovicorp.tasklets.CompressorTasklet" scope="step">
+		<property name="sourceDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/ss" />
+		<property name="destinationDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+		<property name="packageName" value="${lgExtract.ss.packageName}_#{jobParameters['zipcode']}" />
+	</bean>
+	
+	<bean id="LgCreateFolderStructureInFTPBean" class="com.rovicorp.tasklets.RoviCreateFolderStructureTasklet" scope="step">
+		<property name="baseFolder" value="${lgExtract.extract.ftp.mount}/${lgExtract.final.destination.directory}"></property>
+		<property name="foldersToBeCreated">
+			<list>
+		        <value>#{jobParameters['destinationFolder']}</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Moves CLU zip file to FTP location -->
+	<bean id="lgCLUMoveZipFileToFTPBean" class="com.rovicorp.tasklets.ZipFileMoverToMultipleDestinationsTasklet" scope="step">
+		<property name="sourceDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+		<property name="destinationDirectory" value="${lgExtract.extract.ftp.mount}/${lgExtract.final.destination.directory}" />
+		<property name="isLarge" value="${lgExtract.package.zip.name.islarge}" />
+		<property name="moveFileToFTPServer" value="${ftp.post.files}"></property>
+		<property name="packageName" value="${lgExtract.clu.packageName}_#{jobParameters['zipcode']}" />
+		<property name="destinatioSubFolders" value="#{jobParameters['destinationFolder']}"></property>
+		<property name="specificZipFileNames" value="#{jobParameters['specificZipFileNames']}"></property>
+		<property name="defaultZipFileName" value="#{jobParameters['defaultZipFileName']}" />
+	</bean>
+	
+	<!-- Moves SS zip file to FTP location -->
+	<bean id="lgSSMoveZipFileToFTPBean" class="com.rovicorp.tasklets.ZipFileMoverToMultipleDestinationsTasklet" scope="step">
+		<property name="sourceDirectory" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+		<property name="destinationDirectory" value="${lgExtract.extract.ftp.mount}/${lgExtract.final.destination.directory}" />
+		<property name="isLarge" value="${lgExtract.package.zip.name.islarge}" />
+		<property name="moveFileToFTPServer" value="${ftp.post.files}"></property>
+		<property name="packageName" value="${lgExtract.ss.packageName}_#{jobParameters['zipcode']}" />
+		<property name="destinatioSubFolders" value="#{jobParameters['destinationFolder']}"></property>
+		<property name="specificZipFileNames" value="#{jobParameters['specificZipFileNames']}"></property>
+		<property name="defaultZipFileName" value="#{jobParameters['defaultZipFileName']}" />
+	</bean>
+	
+	<!-- this tasklet is use to upload the zip to the ftp-->
+	<bean id="ftpUploaderTaskletBean" class="com.rovicorp.tasklets.FTPUploaderTasklet" scope="step">
+		<property name="copyAllFiles" value="true" />
+		<property name="sourceFileLocation" value="${lgExtract.base.directory.location}/#{jobParameters['zipcode']}/package" />
+		<property name="destinationFileLocation" value="${lgExtract.extract.ftp.mount}/${lgExtract.final.destination.directory}/#{jobParameters['destinationFolder']}" />
+		<property name="postFilestoFTP" value="${ftp.post.files}"></property>
+	</bean>
+	
+	<!-- truncate LG association table and start over -->
+	<!-- Headend -->
+	<bean id="lgHeadendDropAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+		<property name="dataSource" ref="dataSource" />
+	    <property name="sql">
+	    <value>
+	    	<![CDATA[
+            		--if table exists then truncate it else create it
+                    IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}') IS NOT NULL AND ${lgExtract.delete.association.tables.after.job.completed} = 1
+                    	--Truncate table
+                    	DROP TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']}
+			]]>
+		</value>
+		</property>
+	</bean>
+
+	<!-- Source -->	
+	<bean id="lgSourceDropAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+                		--if table exists then truncate it else create it
+                        IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}') IS NOT NULL AND ${lgExtract.delete.association.tables.after.job.completed} = 1
+                        	--Truncate table
+                            DROP TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}
+				]]>
+			</value>
+		</property>
+	</bean>
+       
+	<!-- Program -->	
+	<bean id="lgProgramDropAssociationBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+                		--if table exists then truncate it else create it
+                        IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}') IS NOT NULL AND ${lgExtract.delete.association.tables.after.job.completed} = 1
+                        	--Truncate table
+                            DROP TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']}
+				]]>
+			</value>
+		</property>
+	</bean>
+
+	<!-- truncate LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']}s table and start over -->
+    <bean id="lgDropAssociationListOfProgramCopyCuttingPositionsBean" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet" scope="step">
+    	<property name="dataSource" ref="dataSource" />
+        <property name="sql">
+        	<value>
+            	<![CDATA[
+						--if table exists then truncate it else create it
+                        IF OBJECT_ID('${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}') IS NOT NULL AND ${lgExtract.delete.association.tables.after.job.completed} = 1
+                        	--Truncate table
+                            DROP TABLE ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']}
+				]]>
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="lgFindZipCodeOrHeadendBasedExtractBean" class="com.rovicorp.tasklets.EmptyTasklet" />
+	
+	<!-- Listener for the step. This will identify weather current run is based on Headend or Zipcode -->
+	<bean id="lgFindZipCodeOrHeadendBasedExtractListenerBean" class="com.rovicorp.listeners.RoviCanadaOrUSLGExtractListener" />
+	
+	<bean id="lgRerunFailedZipCodes" class="com.rovicorp.rerun.RoviRunFailedJobs">
+		<property name="folderToLogFailedJobs" value="${lgExtract.folder.to.log.failed.zipcodes.location}" />
+		<property name="jobName" value="lgExtract-job" />
+	</bean>
+	
+	<!-- Scheduler for running the failed jobs -->
+	<task:scheduler id="lgSchedulerToRunFailedJobs" pool-size="1" />
+	
+	<!-- Configuration for the Process that runs failed jobs -->
+	<task:scheduled-tasks scheduler="lgSchedulerToRunFailedJobs">
+	    <task:scheduled ref="lgRerunFailedZipCodes" method="startProcessingFailedJobs" cron="${lgExtract.quartz.scheduler.cron.for.failed.jobs}" />
+	</task:scheduled-tasks>
+
+</beans>

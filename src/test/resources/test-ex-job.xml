@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		">
+	<import resource="testApplicationContext.xml" />
+	
+	<batch:job id="test-ex-job-tst">
+	    <batch:step id="step0" next="step1">
+			<batch:tasklet ref="diskFullTasklet"/>
+		</batch:step>
+	    <batch:step id="step1" next="step2">
+			<batch:tasklet ref="cleanPreviousDayZipFilesBean"/>
+		</batch:step>
+		<batch:step id="step2" next="step3">
+			<batch:tasklet ref="createTable"/>
+		</batch:step>
+		<batch:step id="step3" next="step4">
+			<batch:tasklet ref="insertTestData1"/>
+		</batch:step>
+		<batch:step id="step4" next="step5">
+			<batch:tasklet ref="insertTestData2"/>
+		</batch:step>
+		<batch:step id="step5" next="step6">
+			<batch:tasklet>
+				<batch:chunk reader="exTableItemReader" writer="exItemWriter" processor = "exProcessor" commit-interval="100"/>
+			</batch:tasklet>
+		</batch:step>
+		<batch:step id="step6">
+			<batch:tasklet ref="compressor"/>
+		</batch:step>
+	</batch:job>
+	
+	<!-- The following would be included would be included in the beanDefinitions.xml file -->
+	<bean id="diskFullTasklet" class="com.rovicorp.tasklets.ExTasklet" />
+	<bean id = "exProcessor" class = "com.rovicorp.processors.ExProcessor" />
+	
+	<!-- This tasklet bean compresses/zips source logos -->
+	<bean id="compressor" class="com.rovicorp.tasklets.CompressorTasklet">
+		<property name="sourceDirectory" value="/opt/rovi_base/test/extract" />
+		<property name="destinationDirectory" value="/opt/rovi_base/test/zip" />
+		<property name="compressedFileName" value="_ExTable" />
+		<property name="compressedDateTimeFormat" value="yyyyMMddHHmm" />
+		<property name="compressedFileFormat" value="zip" />
+	</bean>
+	
+	<!-- This tasklet delets previous day zip files from the directory -->
+	<bean id="cleanPreviousDayZipFilesBean" class="com.rovicorp.tasklets.RemoveFilesUnderDirectoryTasklet" >
+		<property name="directory" value="/opt/rovi_base/test/zip"/>
+	</bean>
+	
+	<bean id="createTable" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet">
+       <property name="dataSource" ref="dataSource" />
+       <property name="sql">
+       		<value>
+       			<![CDATA[ 	CREATE TABLE IF NOT EXISTS ExTable(exid INTEGER IDENTITY,id VARCHAR(32),name VARCHAR(32))
+				]]>
+			</value>
+		</property>
+    </bean>
+    
+	<!-- Delete everything in the apollo sources table -->
+    <bean id="insertTestData1" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[ 	insert into ExTable(id,name) values('1','ricky')
+				]]>
+			</value>
+		</property>
+    </bean>
+    
+    <!-- Delete everything in the apollo sources table -->
+    <bean id="insertTestData2" class="com.rovicorp.tasklets.SQLStatementExecutorTasklet">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[ 	insert into ExTable(id,name) values('2','bobby')
+				]]>
+			</value>
+		</property>
+    </bean>
+    
+    
+    
+    <!--  this would be included in the readers.xml file -->
+    <bean id="exTableItemReader"
+		class="org.springframework.batch.item.database.JdbcCursorItemReader"
+		scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[ 
+								select id,name from ExTable;
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ExMapper" />
+		</property>
+	</bean>
+	
+	
+	
+	
+	<!--  this would be included in the writers.xml file -->
+	<bean id="exItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+		<property name="shouldDeleteIfExists" value="true" />
+		<property name="resource" value="file:${ROVI_BASE}/test/extract/ex.txt" />
+		<!-- <property name="encoding" value="${dpi21.files.encoding}" /> -->
+		<property name="lineSeparator" value="&#xD;&#xA;" />
+		<property name="lineAggregator">
+			<bean
+				class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+				<property name="delimiter" value="|" />
+				<property name="fieldExtractor">
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="id,name" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+</beans>

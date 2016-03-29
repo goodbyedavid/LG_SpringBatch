@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		">
+
+	<bean id="specialCharactersBean" class="com.rovicorp.constants.SpecialCharacters">
+    	<property name="specialCharactersMap">
+    		<bean class="org.springframework.beans.factory.config.MapFactoryBean">
+    			<property name="targetMapClass">
+					<value>java.util.HashMap</value>
+				</property>
+				<property name="sourceMap">
+					<map>
+						<entry key='\u0153' value="" /> <!-- œ -->
+						<entry key='\u2014' value="-" /> <!-- — -->
+   					    <entry key='\u2013' value="-" /> <!-- — -->
+						<entry key='\u000A' value="" /> <!-- NewLine -->
+						<entry key='\u000D' value="" /> <!-- Carriage Return -->
+						<entry key='\u2122' value="" /> <!-- ™ Trade -->
+						<entry key='\u007C' value="" /> <!-- | -->
+						<entry key='\u2019' value="'" /> <!-- ’ -->
+						
+						<entry key='\u2018' value="'" /> <!-- ‘ -->
+						<entry key='\u2026' value="." /> <!-- … -->
+						<entry key='\u2019' value="'" /> <!-- ’ -->
+						<entry key='\u20AC' value="" /> <!-- € -->
+						<entry key='\u201C' value="'" /> <!-- “ Check for correct replacement-->
+						<entry key='\u201D' value="'" /> <!-- ” Check for correct replacement-->
+						<entry key='\u0160' value="S" /> <!-- Š -->
+						<entry key='\u017D' value="Z" /> <!-- Ž -->
+						<entry key='\u017E' value="z" /> <!-- ž -->
+						<entry key='\u201E' value="" /> <!-- „ -->
+						<entry key='\u2022' value="" /> <!-- • -->					
+						
+						<entry key='\u0000' value="" /> <!-- � -->
+						<entry key='\uFFFD' value="" /> <!-- � -->
+						<entry key='\u2BD1' value="" /> <!-- � -->
+						
+					</map>
+				</property>
+    		</bean>
+    	</property>
+    </bean>
+ 
+</beans>

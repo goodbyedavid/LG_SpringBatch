@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# This script is installed along with the comcast-dpi21 extract. It will be overwritten with each new installation/update
+#
+# chkconfig: - 80 20
+#
+# Provides: LGExtract
+# Required-Start: $network $syslog
+# Required-Stop: $network $syslog
+# Default-Start:
+# Default-Stop:
+# Description: Starts and stops the LGExtract extract 
+# Short-Description: start() {
+export ROVI_BASE="/opt/rovi_base"
+#JVM_PARAMS="-Xms2048M -Xmx2560M"
+JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7004 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl.need.client.auth=false"
+LOGBACK_OPTS="-Dlogback.configurationFile=$ROVI_BASE/conf/lgExtract/logback.xml"
+CLASSPATH="$ROVI_BASE/LGExtract/app:$ROVI_BASE/LGExtract/app/lib"
+APPUSER="appuser"
+function start(){
+   status=`ps -efww |grep java |grep LGExtract`
+   if [ "${status}" = "" ]; then
+      echo "Starting LGExtract extract"
+      cd $ROVI_BASE/LGExtract/app 
+      su appuser -c "java $JMX_OPTS $LOGBACK_OPTS -jar $ROVI_BASE/LGExtract/app/LGExtract.jar  >> $ROVI_BASE/extracts/lgExtract/logs/lgExtract.out 2>&1 &"
+   else    
+      echo "LGExtract extract is already running"
+   fi
+}
+
+function stop() {
+   echo "stopping LGExtract extract"
+   ps -efww |grep java |grep LGExtract |awk '{print "kill -TERM " $2}' |bash
+}
+
+function status()
+{
+   status=`ps -efww |grep java |grep LGExtract`
+   if [ "${status}" = "" ]; then
+      echo "LGExtract is not running"
+   else 
+      ps -efww |grep java |grep LGExtract |awk '{print "Process ID: " $2}'
+   fi
+}
+
+function usage()
+{
+   echo "Usage: $0 {start|stop|restart|status}"
+   RETVAL="2"
+}
+
+RETVAL="0"
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        sleep 5
+        start
+        ;;
+    status)
+        status
+        ;;
+    *)
+      usage
+      ;;
+esac
+exit $RETVAL
+

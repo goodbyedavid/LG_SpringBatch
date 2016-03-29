@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.2.xsd
+	">
+	
+	<!--  this is an example of what a reader would look like -->	
+	<!--  see the Test case to understand how the readers,writers, and processors work. -->
+	<bean id="lgMsoItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.mso_id [MSO ID], CONVERT(VARCHAR, _pt.mso_name) [MSO Name]
+							FROM Cosmos.dbo.gbl_MSO _pt
+							JOIN Prism.dbo.[customer] pc ON pc.CUST_MSO_ID = _pt.mso_id
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} t ON pc.CUST_HEADEND_ID = t.value
+							ORDER BY [MSO ID]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.MsoRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgZipcodeForUSAItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT z.headendid [Headend ID], CONVERT(VARCHAR, z.postalcode) [Zip Code], COALESCE(pcu.city, pcc.city) [City Name], CONVERT(VARCHAR, COALESCE(pcu.state, pcc.province)) [State Name]
+							FROM Prism.dbo.HeadEndPostalCode z
+							LEFT JOIN Prism.dbo.PostalCode_USA pcu on pcu.postalcode=z.postalcode
+							LEFT JOIN Prism.dbo.PostalCode_CAN pcc on pcc.postalcode=z.postalcode
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} th ON th.value = z.headendid
+							WHERE Z.PostalCode = '#{jobParameters['zipcode']}'
+							ORDER BY [Headend ID], [Zip Code]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ZipcodesRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgZipcodeForCanadaItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT z.headendid [Headend ID], CONVERT(VARCHAR, z.postalcode) [Zip Code], COALESCE(pcu.city, pcc.city) [City Name], CONVERT(VARCHAR, COALESCE(pcu.state, pcc.province)) [State Name]
+							FROM Prism.dbo.HeadEndPostalCode z
+							LEFT JOIN Prism.dbo.PostalCode_USA pcu on pcu.postalcode=z.postalcode
+							LEFT JOIN Prism.dbo.PostalCode_CAN pcc on pcc.postalcode=z.postalcode
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} th ON th.value = z.headendid
+							WHERE Z.PostalCode = '#{jobParameters['canadaPostalCode']}'
+							ORDER BY [Headend ID], [Zip Code]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ZipcodesRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgHeadendItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							WITH cfgCTE (service_id, time_rule)
+							AS
+							(
+								select	s.property_value [ServiceId], t.property_value [TimeRule]
+								from	tvgolconfigs.dbo.stu_cfg_instance s (nolock)
+								left join tvgolconfigs.dbo.stu_cfg_instance t (nolock) on t.instance_id = s.instance_id and t.property_id = 2 
+								where	s.property_id = 1
+							)
+							SELECT DISTINCT H.head_id [Headend ID], H.dma_code [DMA Code], D.dma_rank [DMA Rank], CONVERT(VARCHAR, S.system_name) [System Name], CONVERT(VARCHAR,H.psa_city) [Headend City]
+							,H.psa_state [Headend State], CONVERT(VARCHAR,G.gmt_offset_name) [Headend Time Zone], CONVERT(VARCHAR,C.cust_observes_dst) [Observes DST], S.mso_id [MSO ID], D.dma_name [DMA Name], dcr.channel_device [Device Type]
+							,H.psa_city [psaCity], dcr.cable_service_name [cableServiceName]
+							FROM Cosmos.dbo.gbl_head_end H
+							LEFT JOIN Cosmos.dbo.cms_dma D ON H.dma_code = D.dma_code
+							INNER JOIN Cosmos.dbo.GBL_SYSTEM S ON S.cs_id = H.cs_id
+							INNER JOIN Prism.dbo.[customer] C ON C.cust_headend_id = H.head_id AND C.cust_service_type in ('TVGO', 'TVGI','TVGC','TVGL') AND C.CUST_SERVICE_STATUS = 3
+							INNER JOIN Prism.dbo.[gmt_offset_ref] G ON G.gmt_offset_id = C.gmt_offset_id
+							INNER JOIN Prism.dbo.[channel_line_up] clu ON clu.CUST_SERVICE_ID = C.cust_service_id AND clu_del_flag = 'N'
+							LEFT JOIN  Prism.dbo.[channel_device_codes_ref] AS dcr ON dcr.bit_value & clu.clu_device_codes = dcr.bit_value
+							LEFT JOIN cfgCTE cfg ON cfg.service_id = clu.cust_service_id
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} th ON th.value = H.head_id	
+							ORDER BY [Headend ID]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.HeadendRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgSourceItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.source_id [Source ID], CONVERT(varchar,_pt.NAME) [Short Name], CONVERT(VARCHAR(128),_stv.long_name) [Full Name], CONVERT(VARCHAR,_stv.call_letters) [Call Letters]
+							, CONVERT(VARCHAR,_stv.official_call_sign) [Official Call Sign], CONVERT(VARCHAR,_sa1.NAME) [Affiliate 1], CONVERT(VARCHAR,_sa2.NAME) [Affiliate 2] , CONVERT(VARCHAR,_sa3.NAME) [Affiliate 3]
+							, _st.NAME [Source Type], _stz.name [Time Zone], _stv.observe_dst_yn [DST], CONVERT(VARCHAR,city) [City], CONVERT(VARCHAR,stateprovince_name) [State], _sct.country [Country], _stv.fcc_channel [OTA Channel Number]
+							, _stv.digital_yn [Digital Source], _stv.digi_fcc_channel [Digital Channel Number], _stv.pcipvct_active_yn [PSIP VCT Active], _stv.virtual_channel_location [Virtual Channel Number], _stv.parent_source_id [Analog Partner ID]
+							, _dma.dma_rank [DMA Rank], _dma.dma_name [DMA Name], _stv.owned_operated_yn [Owned Operated], _lx.description [Primary Language], _rtr.NAME [TV Rating Type Used], _rtrm.NAME [Movie Rating Board Used]
+							, _stv.hdtv_yn [HDTV yn], _stv.is_hdtv [Is HDTV], _stv.sap_yn [Is SAP]
+							FROM Staging.dbo.source_base _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']} ts ON ts.value = _pt.source_id
+							LEFT JOIN Staging.dbo.source_tv _stv ON _pt.source_id = _stv.source_id
+							LEFT JOIN Staging.dbo.source_type _st ON _st.source_type_id = _pt.source_type_id
+							LEFT JOIN Staging.dbo.country_ref _sct ON _sct.country_id = _stv.country_id
+							LEFT JOIN Staging.dbo.stateprovince_ref _sps ON _sps.stateprovince_id = _stv.stateprovince_id
+							LEFT JOIN Staging.dbo.source_language_xref _slx ON _slx.source_id = _pt.source_id AND _slx.primary_yn = 'Y'
+							LEFT JOIN Staging.dbo.language_ref _lx ON _lx.language_id = _slx.language_id
+							LEFT JOIN Staging.dbo.gmt_offset _stz ON _stz.gmt_offset_id = _stv.gmt_offset_id
+							LEFT JOIN Cosmos.dbo.cms_dma _dma ON _dma.dma_code = _stv.dma_code
+							LEFT JOIN Staging.dbo.source_base _sa1 ON _stv.affiliate_source_id_1 = _sa1.source_id
+							LEFT JOIN Staging.dbo.source_base _sa2 ON _stv.affiliate_source_id_2 = _sa2.source_id
+							LEFT JOIN Staging.dbo.source_base _sa3 ON _stv.affiliate_source_id_3 = _sa3.source_id
+							LEFT JOIN Staging.dbo.source_tv_profile _stp ON _pt.source_id = _stp.source_id
+							LEFT JOIN Staging.dbo.rating_type_ref _rtr ON _rtr.rating_type_id = _stp.profile_tv_rating_type_id
+							LEFT JOIN Staging.dbo.rating_type_ref _rtrm ON _rtrm.rating_type_id = _stp.profile_movie_rating_type_id
+							ORDER BY [Source ID]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.SourceRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgChannellineupItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.headend_id [Headend ID], _pt.source_id [Source ID], _pt.clu_display_name [Call Letters], _pt.channel_device [Channel Device]
+							, CASE WHEN (_pt.channel_number IS NULL OR _pt.channel_number = '') THEN _ch.clu_channel_location ELSE _pt.channel_number END [Channel Number]
+							, CONVERT(VARCHAR(16), _pt.clu_eff_date, 121) [Effective Date], CONVERT(VARCHAR(16), _pt.clu_end_date, 121) [Expiration Date], _pt.clu_eff_flag [Effective Flag]
+							FROM (
+								SELECT	c.CUST_HEADEND_ID AS headend_id, clu.clu_id, clu.source_id, CASE WHEN dcr.channel_device = 'Y' AND src.digital_yn = 'Y' THEN src.virtual_channel_location ELSE clu_channel_number END AS channel_number
+								, clu.clu_display_name, clu.clu_eff_date, clu.clu_end_date
+								, ISNULL(clu.clu_sun_flag, '') + ISNULL(clu.clu_mon_flag, '') + ISNULL(clu.clu_tue_flag, '') + ISNULL(clu.clu_wed_flag, '') + ISNULL(clu.clu_thu_flag, '') + ISNULL(clu.clu_fri_flag, '') + ISNULL(clu.clu_sat_flag, '') AS clu_eff_flag
+								, NULLIF (dcr.channel_device, '') AS channel_device
+							  	FROM Prism.dbo.channel_line_up AS clu 
+								JOIN Staging.dbo.source_TV src (nolock) ON src.source_id = clu.source_id 
+							    JOIN Prism.dbo.customer AS c ON c.CUST_SERVICE_ID = clu.cust_service_id  AND c.CUST_SERVICE_STATUS = 3 AND c.CUST_SERVICE_TYPE IN ('TVGO', 'TVGC', 'TVGI', 'TVGL') 
+							    LEFT JOIN Prism.dbo.channel_device_codes_ref AS dcr ON dcr.bit_value & clu.clu_device_codes = dcr.bit_value
+							    JOIN Prism.dbo.gmt_offset_ref tz on tz.gmt_offset_id= c.gmt_offset_id
+							  	WHERE	(clu.clu_del_flag = 'N') AND	(clu.source_id < 100000) AND	(clu.clu_eff_date < GETDATE() + 30) AND	(clu.clu_end_date > GETDATE())
+								UNION ALL 
+								SELECT c2.CUST_HEADEND_ID AS headend_id, clu.clu_id, clu.source_id, clu.clu_channel_number AS channel_number, clu.clu_display_name, clu.clu_eff_date, clu.clu_end_date
+								, ISNULL(clu.clu_sun_flag, '') + ISNULL(clu.clu_mon_flag, '') + ISNULL(clu.clu_tue_flag, '') + ISNULL(clu.clu_wed_flag, '') + ISNULL(clu.clu_thu_flag, '') + ISNULL(clu.clu_fri_flag, '') + ISNULL(clu.clu_sat_flag, '') AS clu_eff_flag
+								, NULLIF (dcr.channel_device, '') AS channel_device
+								FROM Prism.dbo.[channel_line_up] AS clu 
+								JOIN Prism.dbo.[customer]  AS c ON c.CUST_SERVICE_ID = clu.cust_service_id AND c.CUST_SERVICE_STATUS = 3 AND c.CUST_SERVICE_TYPE IN ('TVGO', 'TVGC', 'TVGI', 'TVGL') AND c.CUST_PSA_STATE = 'NA' 
+								JOIN Prism.dbo.[customer]  AS c2 ON c2.CUST_SYSTEM_ID = c.CUST_SYSTEM_ID AND c2.CUST_SERVICE_STATUS = 3 AND c2.CUST_SERVICE_TYPE = c.CUST_SERVICE_TYPE AND c2.CUST_PSA_STATE <> 'NA' AND c2.GMT_OFFSET_ID = c.GMT_OFFSET_ID 
+								JOIN Cosmos.dbo.gbl_system AS sys ON sys.cs_id = c.CUST_SYSTEM_ID AND sys.customer_class = 'DB' AND sys.archived_yn = 'N' AND sys.system_status = 2 
+								LEFT JOIN Prism.dbo.[channel_device_codes_ref] AS dcr ON dcr.bit_value & clu.clu_device_codes = dcr.bit_value
+								JOIN Prism.dbo.[gmt_offset_ref] tz1 on tz1.gmt_offset_id= c.gmt_offset_id
+								WHERE (clu.clu_del_flag = 'N') AND (clu.source_id < 100000) AND	(clu.clu_eff_date < GETDATE() + 30) AND	(clu.clu_end_date > GETDATE())
+							) as _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_HEADEND_#{jobParameters['zipcode']} th on th.value = _pt.headend_id
+							JOIN Staging.dbo.source_tv _stv ON _stv.source_id = _pt.source_id
+							JOIN Prism.dbo.channel_line_up _ch ON _ch.clu_id = _pt.clu_id
+							ORDER BY [Headend ID], [Source ID], [Channel Device]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ChannellineupRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgProgramGenresItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT pkx.program_id [Program ID], k.name [Genre2]
+							FROM Staging.dbo.program_keyword_xref pkx
+							INNER JOIN Staging.dbo.keyword_ref k on k.keyword_id = pkx.keyword_id
+							INNER JOIN Staging.dbo.keyword_type_ref ktr on ktr.keyword_type_id = k.keyword_type_id
+							INNER JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} tp ON tp.value = pkx.program_id
+							WHERE k.keyword_type_id != 4
+							ORDER BY [Program ID], [Genre2]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ProgramGenresRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgSourceGenresItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.source_id [Source ID], _kr.NAME [Genre]
+							FROM Staging.dbo.source_keyword_xref _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']} b ON b.value = _pt.source_id
+							JOIN Staging.dbo.keyword_ref _kr ON _kr.keyword_id = _pt.keyword_id
+							WHERE _kr.keyword_type_id != 4
+							ORDER BY [Source ID], [Genre]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.SourceGenreRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgProgramMovieRatingItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+	    
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.program_id [Program ID], _rtr.NAME [Movie Rating Type], _rx.rating_id [NAME], _rrr.NAME [Movie Rating Reasons]
+							FROM Staging.dbo.program_rating_xref _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} tp ON tp.value = _pt.program_id
+							LEFT JOIN Staging.dbo.rating_ref _rx ON _rx.rating_id = _pt.rating_id
+							LEFT JOIN Staging.dbo.rating_type_ref _rtr ON _rtr.rating_type_id = _rx.rating_type_id
+							LEFT JOIN Staging.dbo.program_rating_reason_xref _prrx ON _pt.program_rating_id = _prrx.program_rating_id
+							LEFT JOIN Staging.dbo.rating_reason_ref _rrr ON _rrr.rating_reason_id = _prrx.rating_reason_id
+							WHERE _rx.rating_type_id IN (1,2,3,5,6,10) AND _rtr.rating_medium_id = 2
+							ORDER BY [Program ID], [NAME], [Movie Rating Reasons]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ProgramMovieRatingsRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgProgramTvRatingItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.program_id [Program ID], _rtr.NAME [TV Rating Type], _rx.rating_id [NAME]
+							FROM Staging.dbo.program_rating_xref _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} tp ON tp.value = _pt.program_id
+							LEFT JOIN Staging.dbo.rating_ref _rx ON _rx.rating_id = _pt.rating_id
+							LEFT JOIN Staging.dbo.rating_type_ref _rtr ON _rtr.rating_type_id = _rx.rating_type_id
+							LEFT JOIN Staging.dbo.program_rating_reason_xref _prrx ON _pt.program_rating_id = _prrx.program_rating_id
+							LEFT JOIN Staging.dbo.rating_reason_ref _rrr ON _rrr.rating_reason_id = _prrx.rating_reason_id
+							WHERE _rx.rating_type_id IN (1,2,3,5,6,10) AND _rtr.rating_medium_id = 1
+							ORDER BY [Program ID], [NAME]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ProgramTvRatingsRowMapper" />
+		</property>
+	</bean>
+		
+	<bean id="lgScheduleItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT _pt.source_id [Source ID], CONVERT(VARCHAR(10), CONVERT(DATETIME, _pt.air_date_time), 120) [Start Date], CONVERT(VARCHAR(5), CONVERT(DATETIME, _pt.air_date_time), 114) [Start Time]
+							,_pt.is_time_approximate [Is Time Approximate], _pt.duration_in_seconds [Duration]
+							, _pt.program_id [Program ID]
+							, _pt.error_status_id [Error Status ID]
+							, _prgb.program_type_id [Program Type ID], _prgb.series_parent_program_id [Series Parent Program ID], _rr.rating_id [Rating Name]
+							, _str.name [Program Showing Type], _cr.NAME [Caption Type], _ar.NAME [Audio Level Name], _pt.sap_yn [SAP], _pct.program_color_type_id [Color Type], _pat.program_airing_type_name [Program Airing Type]
+							, _pt.subtitled_yn [Subtitled], _pt.is_joined_in_progress [Joined In Progress], _pt.is_subject_to_blackout [Subject to Blackout], _asr.NAME [Aspect Ratio], _pt.dvs_yn [DSV], _pt.part_number [Part Number]
+							, _pt.part_total [Part Total], _hdtv.NAME [HDTV Level Name], _pt.syndicated_yn [Syndicated]
+							FROM Staging.dbo.schedule _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} schdbyprg_f ON schdbyprg_f.value = _pt.program_id
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_SOURCE_#{jobParameters['zipcode']} b ON b.value = _pt.source_id
+							JOIN Staging.dbo.program_base _prgb ON _prgb.program_id = _pt.program_id
+							LEFT JOIN Staging.dbo.showing_type_ref _str ON _str.showing_type_id = ISNULL(_pt.showing_type_id, 9)
+							LEFT JOIN Staging.dbo.rating_ref _rr ON ISNULL(_pt.rating_id ,9) = _rr.rating_id AND _rr.rating_type_id = 2
+							LEFT JOIN Staging.dbo.audio_level_ref _ar ON ISNULL(_pt.audio_level_id ,4) = _ar.audio_level_id
+							LEFT JOIN Staging.dbo.caption_ref _cr ON ISNULL(_pt.caption_id,6) = _cr.caption_id
+							LEFT JOIN Staging.dbo.program_airing_type_ref _pat ON ISNULL(_pt.program_airing_type_id,5) = _pat.program_airing_type_id
+							LEFT JOIN Staging.dbo.program_color_type_ref _pct ON _pt.program_color_type_id = _pct.program_color_type_id
+							LEFT JOIN Staging.dbo.hdtv_level_ref _hdtv ON ISNULL(_pt.hdtv_level_id,7)  = _hdtv.hdtv_level_id
+							LEFT JOIN Staging.dbo.aspect_ratio_ref _asr ON _pt.aspect_ratio_id = _asr.aspect_ratio_id
+							WHERE _pt.is_active = 1 AND _pt.duration_in_seconds > 0 AND (_pt.air_date_time BETWEEN CONVERT(DATETIME, CONVERT(VARCHAR(10), GETDATE(), 101)) AND DATEADD(second,-1,DATEADD(day, 14, CONVERT(DATETIME, CONVERT(VARCHAR(10), GETDATE(), 101)))) )
+							ORDER BY  [Source ID], [Program ID], [Start Date], [Start Time], [Duration]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ScheduleRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgProgramItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+	    
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+				
+							SELECT * INTO #programCopies FROM
+							(SELECT row_number() OVER (PARTITION BY program_id, copy_type_id, language_id ORDER BY language_id, culture_id, pc.program_copy_id ASC) AS rn, pc.*
+							FROM Staging.dbo.program_copy pc
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} fr ON value = pc.program_id
+							WHERE pc.copy_type_id IN (1, 2, 3, 4, 5)) AS a
+							WHERE a.rn = 1
+							ORDER BY a.program_id
+							
+							SELECT DISTINCT --same query as the Comcast one
+							_ti.program_type_name [Show Type], _pt.program_id [Program ID], _pt.program_type_id [programTypeID], _pt.series_parent_program_id [seriesParentProgramID], convert(VARCHAR(128), _pt.master_title) [Long Title]
+							, convert(VARCHAR(50), _alt4.alternate_title_text) [Medium Title], convert(VARCHAR(30), _alt2.alternate_title_text) [Short Title], convert(VARCHAR(15), _alt1.alternate_title_text) [Grid Title], convert(VARCHAR(8), _alt3.alternate_title_text) [Grid2 Title]
+							, convert(VARCHAR(20), _cat.NAME) [Category], convert(VARCHAR(128), _ps.event_title) [Subtitle], convert(VARCHAR(128), _pe.episode_title) [Episode Title], convert(VARCHAR(20), _pe.episode_number) [Episode Number]
+							, convert(VARCHAR(10), _pt.runtime) [Runtime], convert(VARCHAR(10), _pt.release_year) [Release Year], convert(VARCHAR(30), _lgx.NAME) [Program language], convert(VARCHAR(1), _pt.syndicated_yn) [Syndicated]
+							, _pt.original_airdate [Orginal Air Date], _pt.original_airdate_us [Orginal Air Date US], _pt.event_date [Event Date], convert(VARCHAR(30), _hl.NAME) [HDTV Level], convert(VARCHAR(60), _al.NAME) [Audio Level]
+							, convert(VARCHAR(20), _Mtx.movie_type_name) [Movie Type], convert(VARCHAR(2), _pqrx.rating_moviestar) [Star Rating], convert(VARCHAR(500), _cl.copy_non_html) [Long Description], _pt.category_id [category id], convert(VARCHAR(2000), __smc1.copy_non_html) [Chrono Long]
+							, __smc1f.LIST [Chrono Long Cutting Position], convert(VARCHAR(2000), __smc2.copy_non_html) [promo], __smc2f.LIST [promo Cutting Position], convert(VARCHAR(2000), __smc4.copy_non_html) [Chrono Short]
+                            , __smc4f.LIST [Chrono Short Cutting Position], convert(VARCHAR(2000), __smc3.copy_non_html) [No Cast], __smc3f.LIST [No Cast Cutting Position], convert(VARCHAR(2000), __smc5.copy_non_html) [Grid Copy], __smc5f.LIST [Grid Copy Cutting Position]								
+							FROM Staging.dbo.program_base _pt
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} tp ON tp.value = _pt.program_id
+							LEFT JOIN Staging.dbo.program_episode _pe ON _pe.program_id = _pt.program_id
+							LEFT JOIN Staging.dbo.program_type_ref _ti ON _ti.program_type_id = _pt.program_type_id
+							LEFT JOIN Staging.dbo.program_alt_title_xref _alt1 ON _alt1.program_id = _pt.program_id AND _alt1.alt_title_type_id = 1 
+							LEFT JOIN Staging.dbo.program_alt_title_xref _alt2 ON _alt2.program_id = _pt.program_id AND _alt2.alt_title_type_id = 2 
+							LEFT JOIN Staging.dbo.program_alt_title_xref _alt3 ON _alt3.program_id = _pt.program_id AND _alt3.alt_title_type_id = 3
+							LEFT JOIN Staging.dbo.program_alt_title_xref _alt4 ON _alt4.program_id = _pt.program_id AND _alt4.alt_title_type_id = 4 
+							LEFT JOIN Staging.dbo.audio_level_ref _al ON _al.audio_level_id = isnull(_pt.audio_level_id ,4)
+							LEFT JOIN Staging.dbo.hdtv_level_ref _hl ON _hl.hdtv_level_id = isnull(_pt.hdtv_level_id ,7)
+							LEFT JOIN Staging.dbo.category _cat ON _cat.category_id = _pt.category_id
+							LEFT JOIN #programCopies _cl ON _cl.program_id = _pt.program_id AND _cl.copy_type_id = 1 AND _pt.language_id = _cl.language_id AND _cl.culture_id NOT IN (246,247,248,249,251,253,255,256)
+							LEFT JOIN Staging.dbo.language_ref _lgx ON _lgx.language_id = _pt.language_id
+							LEFT JOIN Staging.dbo.movie_type_ref _Mtx ON _Mtx.movie_type_id = _pt.movie_type_id
+							LEFT JOIN #programCopies __smc1(NOLOCK) ON __smc1.program_id = _pt.program_id AND __smc1.copy_type_id = 1 AND _pt.language_id = __smc1.language_id AND __smc1.culture_id NOT IN (246,247,248,249,251,253,255,256) AND COALESCE (__smc1.is_ready_for_extract, 1) != 0 AND __smc1.source_id IS NULL
+							LEFT JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']} __smc1f(NOLOCK) ON __smc1f.program_copy_id = __smc1.program_copy_id 
+							LEFT JOIN #programCopies __smc2(NOLOCK) ON __smc2.program_id = _pt.program_id AND __smc2.copy_type_id = 2 AND _pt.language_id = __smc2.language_id AND __smc2.culture_id NOT IN (246,247,248,249,251,253,255,256) AND COALESCE (__smc2.is_ready_for_extract, 1) != 0 AND __smc2.source_id IS NULL
+							LEFT JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']} __smc2f(NOLOCK) ON __smc2f.program_copy_id = __smc2.program_copy_id 
+							LEFT JOIN #programCopies __smc3(NOLOCK) ON __smc3.program_id = _pt.program_id AND __smc3.copy_type_id = 3 AND _pt.language_id = __smc3.language_id AND __smc3.culture_id NOT IN (246,247,248,249,251,253,255,256) AND COALESCE (__smc3.is_ready_for_extract, 1) != 0 AND __smc3.source_id IS NULL
+							LEFT JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']} __smc3f(NOLOCK) ON __smc3f.program_copy_id = __smc3.program_copy_id 
+							LEFT JOIN #programCopies __smc4(NOLOCK) ON __smc4.program_id = _pt.program_id AND __smc4.copy_type_id = 4 AND _pt.language_id = __smc4.language_id AND __smc4.culture_id NOT IN (246,247,248,249,251,253,255,256) AND COALESCE (__smc4.is_ready_for_extract, 1) != 0 AND __smc4.source_id IS NULL
+							LEFT JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']} __smc4f(NOLOCK) ON __smc4f.program_copy_id = __smc4.program_copy_id 
+							LEFT JOIN #programCopies __smc5(NOLOCK) ON __smc5.program_id = _pt.program_id AND __smc5.copy_type_id = 5 AND _pt.language_id = __smc5.language_id AND __smc5.culture_id NOT IN (246,247,248,249,251,253,255,256) AND COALESCE (__smc5.is_ready_for_extract, 1) != 0 AND __smc5.source_id IS NULL
+							LEFT JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_LISTOFPROGRAMCOPYCUTTINGPOSITIONS_#{jobParameters['zipcode']} __smc5f(NOLOCK) ON __smc5f.program_copy_id = __smc5.program_copy_id 
+							LEFT JOIN Staging.dbo.program_sports _ps ON _ps.program_id = _pt.program_id
+							LEFT JOIN Staging.dbo.program_quality_rating_xref _pqrx ON _pqrx.program_id = _pt.program_id
+							ORDER BY [Program ID]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ProgramRowMapper" />
+		</property>
+	</bean>
+	
+	<bean id="lgProgramCreditsItemReader" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql">
+			<value>
+				<![CDATA[
+							SELECT DISTINCT pc.program_id [Program ID], pc.credit_id [Credit ID], _ct.NAME [Credit_Type], CONVERT(VARCHAR(60),COALESCE(caka.first_name, c.first_name)) [First Name]
+							,CONVERT(VARCHAR(60),COALESCE(caka.last_name, oaka.org_name, c.last_name, o.org_name)) [Last Name], CONVERT(VARCHAR(60),COALESCE(caka.full_name, oaka.org_name, c.full_name, o.org_name, pc.credit_name)) [Full Credit Name]
+							,CONVERT(VARCHAR(60),pc.part_name) [Part Name], pc.billing_sequence [Sequence  Number]
+							FROM Staging.dbo.program_credit pc
+							LEFT JOIN Staging.dbo.credit c ON c.credit_id = pc.credit_id
+							LEFT JOIN Staging.dbo.organization o ON o.organization_id = pc.organization_id
+							LEFT JOIN Staging.dbo.credit_aka caka ON caka.credit_aka_id = pc.credit_aka_id
+							LEFT JOIN Staging.dbo.organization_aka oaka ON oaka.organization_aka_id = pc.organization_aka_id
+							JOIN ${db.configDBName}.dbo.LG_ASSOCIATION_PROGRAM_#{jobParameters['zipcode']} tp ON tp.value = pc.program_id
+							LEFT JOIN Staging.dbo.credit_type _ct ON _ct.credit_type_id = pc.credit_type_id
+							ORDER BY [Program ID], [Credit ID]
+				]]>
+			</value>
+		</property>
+		<property name="rowMapper">
+			<bean class="com.rovicorp.mappers.ProgramCreditsRowMapper" />
+		</property>
+	</bean>
+	
+</beans>

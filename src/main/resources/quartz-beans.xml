@@ -1,0 +1,33 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">   
+
+   <!-- this is the job scheduler. the only real thing to change is in the properties file quarts.properties
+   that lists when the job is suppose to run -->
+   <!-- run every cron timer min -->
+   <bean id="lgExtractScheuler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<property name="triggers">
+	  <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="job-details" />
+		<!-- <property name="cronExpression" value="0 0/3 * * * ?" /> -->
+		<property name="cronExpression" value="${lgExtract.quartz.scheduler.cron}" />
+	  </bean>
+	</property>
+	<property name="configLocation" value="file:${ROVI_BASE}/conf/lgExtract/quartz.properties" />
+  </bean>
+
+  <bean id="job-details" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<property name="jobClass" value="com.rovicorp.scheduler.MultiRunJobLauncherDetails" />
+	<property name="group" value="default" />
+	<property name="jobDataAsMap">
+	  <map>
+		<entry key="jobName" value="lgExtract-job" />
+		<entry key="jobLocator" value-ref="jobRegistry" />
+		<entry key="jobLauncher" value-ref="jobLauncher" />
+	  </map>
+	</property>
+  </bean> 
+
+</beans>

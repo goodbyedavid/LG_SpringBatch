@@ -1,0 +1,3200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:batch="http://www.springframework.org/schema/batch" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/batch    http://www.springframework.org/schema/batch/spring-batch-2.2.xsd   http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd   http://www.springframework.org/schema/util    http://www.springframework.org/schema/util/spring-util-3.2.xsd   ">
+   <bean id="jobParametersBean" class="com.rovicorp.constants.MultiRunJobParametersList">
+      <property name="jobParametersList">
+         <list>
+            <!--<bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="80921" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Colorado" />
+                     <entry key="specificZipFileNames" value="Colorado|Albany" />
+                     <entry key="destinationFolder" value="ColoradoSpringsCO|Albany" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="32714" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="AltamonteSprings" />
+                     <entry key="destinationFolder" value="AltamonteSprings" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="21401" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Annapolis" />
+                     <entry key="destinationFolder" value="Annapolis" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="48103" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="AnnArborMI" />
+                     <entry key="destinationFolder" value="AnnArborMI" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="54913" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Appleton" />
+                     <entry key="destinationFolder" value="Appleton" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="76011" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Arlington" />
+                     <entry key="destinationFolder" value="Arlington" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="22226" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ArlingtonVA" />
+                     <entry key="destinationFolder" value="ArlingtonVA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="81611" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Aspen" />
+                     <entry key="destinationFolder" value="AspenCO" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="93422" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="AtascaderoCA" />
+                     <entry key="destinationFolder" value="AtascaderoCA" />
+                  </map>
+               </property>
+            </bean>-->
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="30602" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Athens" />
+                     <entry key="specificZipFileNames" value="Athens|Peoria" />
+                     <entry key="destinationFolder" value="Athens|Peoria" />
+                  </map>
+               </property>
+            </bean>
+            <!--<bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="75751" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="AthensTX" />
+                     <entry key="destinationFolder" value="AthensTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="30346" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Atlanta" />
+                     <entry key="destinationFolder" value="Atlanta" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="78752" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Austin" />
+                     <entry key="destinationFolder" value="Austin" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="04401" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Bangor" />
+                     <entry key="destinationFolder" value="BangorME" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="04609" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="BarHarbor" />
+                     <entry key="destinationFolder" value="BarHarborME" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="98226" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Bellingham" />
+                     <entry key="destinationFolder" value="BellinghamWA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="72712" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Bentonville" />
+                     <entry key="destinationFolder" value="BentonvilleAR" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="58501" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Bismarck" />
+                     <entry key="destinationFolder" value="Bismarck" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="47401" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Bloomington" />
+                     <entry key="destinationFolder" value="Bloomington" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="83702" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Boise" />
+                     <entry key="destinationFolder" value="BoiseID" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="02201" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Boston" />
+                     <entry key="destinationFolder" value="Boston" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="98011" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Bothell" />
+                     <entry key="destinationFolder" value="BothellWA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="80424" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="BreckenridgeCO" />
+                     <entry key="destinationFolder" value="Breckenridge" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="63144" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Brentwood" />
+                     <entry key="destinationFolder" value="BrentwoodMO" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="55430" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="BrooklynCenter" />
+                     <entry key="destinationFolder" value="BrooklynCenter" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="11216" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="BrooklynNY" />
+                     <entry key="destinationFolder" value="BrooklynNY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="14201" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Buffalo" />
+                     <entry key="destinationFolder" value="BuffaloNY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="05406" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Burlington" />
+                     <entry key="destinationFolder" value="BurlingtonVT" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="94515" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Calistoga" />
+                     <entry key="destinationFolder" value="CalistogaCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="44706" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Canton" />
+                     <entry key="destinationFolder" value="CantonOH" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="93924" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="CarmelValley" />
+                     <entry key="destinationFolder" value="CarmelValleyCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="44615" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Carrolton" />
+                     <entry key="destinationFolder" value="CarroltonOH" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="82601" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Casper" />
+                     <entry key="destinationFolder" value="CasperWY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="98531" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="CentraliaWA" />
+                     <entry key="destinationFolder" value="CentraliaWA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="61820" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Champaign" />
+                     <entry key="destinationFolder" value="ChampaignIL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="85228" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Chandle" />
+                     <entry key="destinationFolder" value="ChandlerAZ" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="29406" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Charleston" />
+                     <entry key="destinationFolder" value="Charleston" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="28211" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="CharlotteNC" />
+                     <entry key="destinationFolder" value="CharlotteNC" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="23320" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Chesapeake" />
+                     <entry key="destinationFolder" value="Chesapeake" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="63017" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Chesterfield" />
+                     <entry key="destinationFolder" value="ChesterfieldMo" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="82009" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Cheyenne" />
+                     <entry key="destinationFolder" value="CheyenneWY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="60661" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Chicago" />
+                     <entry key="destinationFolder" value="Chicago" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="37040" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ClarksvilleTN" />
+                     <entry key="destinationFolder" value="ClarksvilleTN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="52732" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Clinton" />
+                     <entry key="destinationFolder" value="ClintonIA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="43240" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Columbus" />
+                     <entry key="destinationFolder" value="Columbus" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="75214" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="DallasTX" />
+                     <entry key="destinationFolder" value="DallasTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92629" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="DanaPointCA" />
+                     <entry key="destinationFolder" value="DanaPointCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="32114" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="DaytonaBeach" />
+                     <entry key="destinationFolder" value="DaytonaBeach" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="80237" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Denver" />
+                     <entry key="destinationFolder" value="Denver" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="27701" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="DurhamNC" />
+                     <entry key="destinationFolder" value="DurhamNC" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="05832" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Burke" />
+                     <entry key="destinationFolder" value="EastBurkeVT" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="46124" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="EdinburghIN" />
+                     <entry key="destinationFolder" value="EdinburghIN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="79905" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Elpasco" />
+                     <entry key="destinationFolder" value="ElPasoTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="94608" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Emeryville" />
+                     <entry key="destinationFolder" value="Emeryville" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="22042" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="FallsChurch" />
+                     <entry key="destinationFolder" value="FallsChurch" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="58103" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="FargoND" />
+                     <entry key="destinationFolder" value="FargoND" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="28311" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Fayetteville" />
+                     <entry key="destinationFolder" value="Fayetteville" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="95630" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="FolsomCA" />
+                     <entry key="destinationFolder" value="FolsomCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92708" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="FountainValley" />
+                     <entry key="destinationFolder" value="FountainValley" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="48734" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Frankenmuth" />
+                     <entry key="specificZipFileNames" value="Frankenmuth|NoviMI" />
+                     <entry key="destinationFolder" value="FrankenmuthMI|Novi" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="37067" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Franklin" />
+                     <entry key="destinationFolder" value="FranklinTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="21704" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Frederick" />
+                     <entry key="destinationFolder" value="FrederickMD" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="68025" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Fremont" />
+                     <entry key="destinationFolder" value="FremontNE" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="93720" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Fresno" />
+                     <entry key="destinationFolder" value="FresnoCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="32605" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="GainesvilleFL" />
+                     <entry key="destinationFolder" value="GainesvilleFL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="93116" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Goleta" />
+                     <entry key="destinationFolder" value="GoletaCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="81506" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="GrandJunction" />
+                     <entry key="destinationFolder" value="GrandJunctionCO" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="55744" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="GrandRapids" />
+                     <entry key="destinationFolder" value="GrandRapidsMN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="56241" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Granite" />
+                     <entry key="destinationFolder" value="GraniteFallsMN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="76051" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="GrapeVine" />
+                     <entry key="destinationFolder" value="GrapevineTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="22801" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Harrisonburg" />
+                     <entry key="destinationFolder" value="HarrisonburgVA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="07029" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Harrison" />
+                     <entry key="destinationFolder" value="HarrisonNJ" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="17033" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Hershey" />
+                     <entry key="destinationFolder" value="Hershey" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="30546" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Hiawassee" />
+                     <entry key="destinationFolder" value="Hiawassee" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="28602" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Hickory" />
+                     <entry key="destinationFolder" value="Hickory" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="29928" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="HiltonHead" />
+                     <entry key="destinationFolder" value="HiltonHeadIsland" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="90028" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Hollywood" />
+                     <entry key="destinationFolder" value="Hollywood" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="96815" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Honolulu" />
+                     <entry key="destinationFolder" value="Honolulu" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="70360" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="HoumaLA" />
+                     <entry key="destinationFolder" value="HoumaLA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="77084" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Houston" />
+                     <entry key="destinationFolder" value="Houston" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="46204" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Indianapolis" />
+                     <entry key="destinationFolder" value="Indianapolis" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="75063" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Irving" />
+                     <entry key="destinationFolder" value="IrvingTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="28546" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Jacksonville" />
+                     <entry key="destinationFolder" value="JacksonvilleNC" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="05859" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Jay" />
+                     <entry key="destinationFolder" value="Jay" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="95450" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Jenner" />
+                     <entry key="destinationFolder" value="JennerCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33458" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Jupiter" />
+                     <entry key="destinationFolder" value="Jupiter" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="66111" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="KansasCity" />
+                     <entry key="destinationFolder" value="KansasCity" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="68845" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Kearney" />
+                     <entry key="destinationFolder" value="Kearney" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33040" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Keywest" />
+                     <entry key="destinationFolder" value="KeyWest" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="34746" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="KissimmeeFL" />
+                     <entry key="destinationFolder" value="KissimmeeFL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="37922" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="KnoxvilleTN" />
+                     <entry key="destinationFolder" value="KnoxvilleTN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="96756" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Koloa" />
+                     <entry key="destinationFolder" value="KoloaHI" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="70506" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LafayetteLA" />
+                     <entry key="destinationFolder" value="LafayetteLA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="20774" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Largo" />
+                     <entry key="destinationFolder" value="Largo" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="89119" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Vail" />
+                     <entry key="specificZipFileNames" value="Vail|LasVegasNV" />
+                     <entry key="destinationFolder" value="VailCO|LasVegasNV" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="72211" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Littlerock" />
+                     <entry key="destinationFolder" value="Littlerock" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="90005" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LosAngeles" />
+                     <entry key="destinationFolder" value="LosAngeles" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="40202" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Louisville" />
+                     <entry key="destinationFolder" value="LouisvilleKY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="37777" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LouisvilleTN" />
+                     <entry key="destinationFolder" value="LouisvilleTN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="75220" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LubbockTX" />
+                     <entry key="destinationFolder" value="Lubbock" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="24502" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LynchburgVA" />
+                     <entry key="destinationFolder" value="LynchburgVA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="52057" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Manchester" />
+                     <entry key="destinationFolder" value="ManchesterIA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="66502" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Manhattan" />
+                     <entry key="destinationFolder" value="ManhattanKS" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="45040" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Mason" />
+                     <entry key="destinationFolder" value="MasonOH" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="32901" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Melbourne" />
+                     <entry key="destinationFolder" value="MelbourneFL" />
+                  </map>
+               </property>
+            </bean>-->
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="38118" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Memphis" />
+                     <entry key="destinationFolder" value="MemphisTN" />
+                  </map>
+               </property>
+            </bean>
+            <!--<bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="85206" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Mesa" />
+                     <entry key="destinationFolder" value="Mesa" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33132" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Miami" />
+                     <entry key="destinationFolder" value="Miami" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33140" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="MiamiBeach" />
+                     <entry key="destinationFolder" value="MiamiBeachFL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="46360" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="MichiganCityIN" />
+                     <entry key="destinationFolder" value="MichiganCityIN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="46540" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Middlebury" />
+                     <entry key="destinationFolder" value="Middlebury" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="79706" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Midland" />
+                     <entry key="destinationFolder" value="MidlandTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="59802" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Missoula" />
+                     <entry key="destinationFolder" value="Missoula" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="91754" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="MontereyPark" />
+                     <entry key="destinationFolder" value="MontereyParkCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="62864" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="MountVernon" />
+                     <entry key="destinationFolder" value="MountVernonIL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="94558" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NAPA" />
+                     <entry key="destinationFolder" value="NapaCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="37210" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Nashville" />
+                     <entry key="destinationFolder" value="Nashville" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="28560" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NewBern" />
+                     <entry key="destinationFolder" value="NewBern" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="19720" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NewCastle" />
+                     <entry key="destinationFolder" value="NewCastle" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="70130" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NewOrleans" />
+                     <entry key="destinationFolder" value="NewOrleans" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92657" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NewportCA" />
+                     <entry key="destinationFolder" value="NewportBeachCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="10036" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NewYork" />
+                     <entry key="destinationFolder" value="NewYork" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="68701" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NorfolkNE" />
+                     <entry key="destinationFolder" value="NorfolkNE" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="72216" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NorthLittleRock" />
+                     <entry key="destinationFolder" value="NorthLittleRock" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="46556" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="NotreDame" />
+                     <entry key="destinationFolder" value="NotreDame" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="94621" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Oakland" />
+                     <entry key="destinationFolder" value="OaklandCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92054" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Oceanside" />
+                     <entry key="destinationFolder" value="Oceanside" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="73104" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="OKlahomaCity" />
+                     <entry key="destinationFolder" value="OklahomaCity" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="32837" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Orlando" />
+                     <entry key="destinationFolder" value="Orlando" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="66213" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="OverlandPark" />
+                     <entry key="destinationFolder" value="OverlandParkKS" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="38655" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="OxfordMS" />
+                     <entry key="destinationFolder" value="OxfordMS" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="89048" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="PahrumpNV" />
+                     <entry key="destinationFolder" value="PahrumpNV" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="41240" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="PaintsvilleKY" />
+                     <entry key="destinationFolder" value="PaintsvilleKY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92262" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="PalmSprings" />
+                     <entry key="destinationFolder" value="PalmSpringsCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="84060" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ElectronicsParkCity" />
+                     <entry key="destinationFolder" value="ParkCityUT" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="19107" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Philadelphia" />
+                     <entry key="destinationFolder" value="Philadelphia" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="85020" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Phoenix" />
+                     <entry key="destinationFolder" value="Phoenix" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="94588" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Pleasanton" />
+                     <entry key="destinationFolder" value="PleasantonCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33062" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Pompano" />
+                     <entry key="destinationFolder" value="Pompano" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="49002" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Portage" />
+                     <entry key="destinationFolder" value="Portage" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33980" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="PortCharlotte" />
+                     <entry key="destinationFolder" value="PortCharlotte" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="97209" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Portland" />
+                     <entry key="destinationFolder" value="Portland" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="04101" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Portland" />
+                     <entry key="destinationFolder" value="Portland_ME" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="02903" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Providence" />
+                     <entry key="destinationFolder" value="ProvidenceRI" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33950" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="PuntaGorda" />
+                     <entry key="destinationFolder" value="PuntaGorda" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="07065" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Rahway" />
+                     <entry key="destinationFolder" value="Rahway" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92270" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="RanchoMirageCA" />
+                     <entry key="destinationFolder" value="RanchoMirageCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="23219" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Richmond" />
+                     <entry key="destinationFolder" value="RichmondVA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="27870" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="RoanokeRapids" />
+                     <entry key="destinationFolder" value="RoanokeRapids" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="24014" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Roanoke" />
+                     <entry key="destinationFolder" value="RoanokeVA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="72756" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="RogerAR" />
+                     <entry key="destinationFolder" value="RogerAR" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="84111" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SaltLakeCityUT" />
+                     <entry key="destinationFolder" value="SaltLakeCityUT" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="78216" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SanAntonio" />
+                     <entry key="destinationFolder" value="SanAntonioTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92408" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SanBernardino" />
+                     <entry key="destinationFolder" value="SanBernardino" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="92109" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SanDiego" />
+                     <entry key="destinationFolder" value="SanDiego" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="94108" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SanFrancisco" />
+                     <entry key="destinationFolder" value="SanFrancisco" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="95110" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SanJoseCA" />
+                     <entry key="destinationFolder" value="SanJoseCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="87501" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SantaFe" />
+                     <entry key="destinationFolder" value="SantaFeNM" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="18355" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Scotrun" />
+                     <entry key="destinationFolder" value="Scotrun" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="85255" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Scottsdale" />
+                     <entry key="destinationFolder" value="ScottsdaleAZ" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="95060" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ScottsValley" />
+                     <entry key="destinationFolder" value="ScottsValley" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="98188" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Seattle" />
+                     <entry key="specificZipFileNames" value="Seattle|TukwilaWA" />
+                     <entry key="destinationFolder" value="Seattle|TukwilaWA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="59270" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SidneyMT" />
+                     <entry key="destinationFolder" value="SidneyMT" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="57107" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SiouxFalls" />
+                     <entry key="destinationFolder" value="SiouxFalls" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="37167" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SmyrnaTN" />
+                     <entry key="destinationFolder" value="SmyrnaTN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="96150" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="SouthLakeTahoe" />
+                     <entry key="destinationFolder" value="SouthLakeTahoe" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="99201" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Spokane" />
+                     <entry key="destinationFolder" value="Spokane" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="22554" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Stafford" />
+                     <entry key="destinationFolder" value="Stafford" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="43950" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="StClairsville" />
+                     <entry key="destinationFolder" value="StClairsvilleOH" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="63131" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="StLouis" />
+                     <entry key="destinationFolder" value="StLouis" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="55101" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="StPaul" />
+                     <entry key="destinationFolder" value="StPaul" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="00802" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="StThomas" />
+                     <entry key="destinationFolder" value="StThomas" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33637" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Tampa" />
+                     <entry key="destinationFolder" value="Tampa" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="85283" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="TempeAZ" />
+                     <entry key="destinationFolder" value="TempeAZ" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="75503" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Texarkana" />
+                     <entry key="destinationFolder" value="Texarkana" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="31794" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Tifton" />
+                     <entry key="destinationFolder" value="Tifton" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="03276" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="TiltonNH" />
+                     <entry key="destinationFolder" value="TiltonNH" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="49684" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="TraveseCity" />
+                     <entry key="destinationFolder" value="TraverseCity" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="36082" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="TroyAL" />
+                     <entry key="destinationFolder" value="TroyAL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="85739" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Tucson" />
+                     <entry key="destinationFolder" value="TucsonAZ" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="75703" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="TylerTX" />
+                     <entry key="destinationFolder" value="TylerTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="91355" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Valencia" />
+                     <entry key="destinationFolder" value="ValenciaCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="77904" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="VictoriaTX" />
+                     <entry key="destinationFolder" value="Victoria" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="23451" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="VirginiaBeach" />
+                     <entry key="destinationFolder" value="VirginiaBeach" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="76705" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Waco" />
+                     <entry key="destinationFolder" value="WacoTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="22406" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WarrentonVA" />
+                     <entry key="destinationFolder" value="WarrentonVA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="20001" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Washington" />
+                     <entry key="destinationFolder" value="WashingtonDC" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="80021" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Westminster" />
+                     <entry key="destinationFolder" value="Westminster" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="24986" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WhiteSulphurSprings" />
+                     <entry key="destinationFolder" value="WhiteSulphurSpringsWV" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="76301" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WichitaFalls" />
+                     <entry key="destinationFolder" value="WichitaFallsTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="44092" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Wickliffe" />
+                     <entry key="destinationFolder" value="Wickliffe" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="08260" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WildwoodNJ" />
+                     <entry key="destinationFolder" value="Wildwood" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="23188" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Williamsburg" />
+                     <entry key="destinationFolder" value="Williamsburg" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="60091" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Wilmette" />
+                     <entry key="destinationFolder" value="Wilmette" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="38401" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Wilmington" />
+                     <entry key="destinationFolder" value="WilmingtonNC" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="12997" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WilmingtonNY" />
+                     <entry key="destinationFolder" value="WilmingtonNY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33884" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WinterHavenFL" />
+                     <entry key="destinationFolder" value="WinterHavenFL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="53965" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="WisconsinDells" />
+                     <entry key="destinationFolder" value="WisconsinDellsWI" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="44514" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Youngstown" />
+                     <entry key="destinationFolder" value="Youngstown" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="02633" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ChathamCA" />
+                     <entry key="destinationFolder" value="ChathamCA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Calgary" />
+                     <entry key="headendsList" value="324008, 322943, 324102, 300076, 324882, 324003, 300926, 330898" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Calgary" />
+                     <entry key="destinationFolder" value="Calgary" />
+                     <entry key="canadaPostalCode" value="T2P 1A1" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="EdmontonAB" />
+                     <entry key="headendsList" value="324008, 324103, 322943, 715, 324003, 324882, 300927, 330898" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="EdmontonAB" />
+                     <entry key="destinationFolder" value="Edmonton" />
+                     <entry key="canadaPostalCode" value="T5P 4K8" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Fredericton" />
+                     <entry key="headendsList" value="3670, 322223, 327239, 324006, 327001, 322937, 324118, 324001, 324885" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Fredericton" />
+                     <entry key="destinationFolder" value="FrederictonNB" />
+                     <entry key="canadaPostalCode" value="E3B 1B1" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Halifax" />
+                     <entry key="headendsList" value="3023, 324114, 327001, 324006, 3022, 324885, 324001" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Halifax" />
+                     <entry key="destinationFolder" value="Halifax" />
+                     <entry key="canadaPostalCode" value="B3K 5N0" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Montreal" />
+                     <entry key="headendsList" value="307250, 322141, 322274, 322275, 324096, 324883, 326512" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Montreal" />
+                     <entry key="destinationFolder" value="Montreal" />
+                     <entry key="canadaPostalCode" value="H3H 2L3" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Nanaimo" />
+                     <entry key="headendsList" value="324009, 322944, 324100, 725, 324880, 324004, 330795, 330897" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Nanaimo" />
+                     <entry key="destinationFolder" value="NanaimoBC" />
+                     <entry key="canadaPostalCode" value="V9R 5J6" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Newfoundland" />
+                     <entry key="headendsList" value="322934, 324117, 324754, 23724" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Newfoundland" />
+                     <entry key="destinationFolder" value="Newfoundland" />
+                     <entry key="canadaPostalCode" value="A1C 0B7" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="ReginaSK" />
+                     <entry key="headendsList" value="15834, 324007, 322942, 324110, 15836, 324932, 324002, 324884" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ReginaSK" />
+                     <entry key="destinationFolder" value="ReginaSKCa" />
+                     <entry key="canadaPostalCode" value="S4P 1Y2" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Toronto" />
+                     <entry key="headendsList" value="792, 307250, 322141, 324078, 324538, 324883, 325363, 327148, 327267" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Toronto" />
+                     <entry key="destinationFolder" value="Toronto" />
+                     <entry key="canadaPostalCode" value="M6K 3M9" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="Vancouver" />
+                     <entry key="headendsList" value="23524, 317293, 321712, 322944, 323399, 324004, 324009, 324100, 324880, 330897" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="Vancouver" />
+                     <entry key="destinationFolder" value="Vancouver" />
+                     <entry key="canadaPostalCode" value="V6B 6L9" />
+                  </map>
+               </property>
+            </bean>-->
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="LGVictoriaBC" />
+                     <entry key="headendsList" value="740, 322944, 324004, 324009, 324100, 324880, 330795, 330897" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LGVictoriaBC" />
+                     <entry key="destinationFolder" value="VictoriaBC" />
+                     <entry key="canadaPostalCode" value="V8S 2N2" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="06032" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="FarmingtonCT" />
+                     <entry key="destinationFolder" value="FarmingtonCT" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="10504" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="ArmonkNY" />
+                     <entry key="destinationFolder" value="ArmonkNY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="33140" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="PalmBeachGardensFL" />
+                     <entry key="destinationFolder" value="PalmBeachGardensFL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="32216" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="JacksonvilleFL" />
+                     <entry key="destinationFolder" value="JacksonvilleFL" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="79401" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LubbockTX" />
+                     <entry key="destinationFolder" value="LubbockTX" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="21090" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LinthicumMD" />
+                     <entry key="destinationFolder" value="LinthicumMD" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="41042" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="CincinnatiOH" />
+                     <entry key="destinationFolder" value="CincinnatiOH" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="63301" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="StCharlesMO" />
+                     <entry key="destinationFolder" value="StCharlesMO" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="55904" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="RochesterMN" />
+                     <entry key="destinationFolder" value="RochesterMN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="15205" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="RobinsonPA" />
+                     <entry key="destinationFolder" value="RobinsonPA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="07430" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="MahwahNJ" />
+                     <entry key="destinationFolder" value="MahwahNJ" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="52801" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="DavenportIA" />
+                     <entry key="destinationFolder" value="DavenportIA" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="47804" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="TerreHauteIN" />
+                     <entry key="destinationFolder" value="TerreHauteIN" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="40509" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="LexingtonKY" />
+                     <entry key="destinationFolder" value="LexingtonKY" />
+                  </map>
+               </property>
+            </bean>
+            <bean class="org.springframework.beans.factory.config.MapFactoryBean">
+               <property name="targetMapClass">
+                  <value>java.util.HashMap</value>
+               </property>
+               <property name="sourceMap">
+                  <map>
+                     <entry key="zipcode" value="14850" />
+                     <entry key="city" value="" />
+                     <entry key="state" value="" />
+                     <entry key="defaultZipFileName" value="IthacaNY" />
+                     <entry key="destinationFolder" value="IthacaNY" />
+                  </map>
+               </property>
+            </bean>
+         </list>
+      </property>
+   </bean>
+</beans>

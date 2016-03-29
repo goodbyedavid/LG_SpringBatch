@@ -1,0 +1,1 @@
+zipcode|02201state|defaultdefaultZipFileName|BostondestinationFolder|Bostoncity|time|1449864613374

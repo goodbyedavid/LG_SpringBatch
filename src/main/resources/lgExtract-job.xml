@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/batch 
+		http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util-3.2.xsd
+	">
+	
+	<!-- common spring batch beans and job registry -->
+	<import resource="applicationContext.xml" />
+	
+	<!-- jmx configurations and exports -->
+	<import resource="jmx-config.xml" />
+	
+	<!-- database connection -->
+	<import resource="database.xml" />
+	
+	<!-- Readers -->
+	<import resource="lg-readers.xml" />
+	
+	<!-- Writers  -->
+	<import resource="lg-writers.xml" />
+	
+	<!-- Processors - business logic -->
+	<import resource="lg-processors.xml" />
+	
+	<!-- the scheduler -->
+	<import resource="quartz-beans.xml"/>
+	
+	<!-- All the bean definitons are defined here -->
+	<import resource="lg-beanDefinitions.xml"/>
+  	
+  	<!-- All the special characters and their replace characters are defined here -->
+	<import resource="file:${ROVI_BASE}/conf/lgExtract/specialCharacters.xml" />
+	
+	<!-- Spring batch MBeans -->
+	<import resource="springBatchMBeans.xml" />
+	
+	<import resource="file:${ROVI_BASE}/conf/lgExtract/zipCodesList.xml" />
+	
+    <job id="lgExtract-job" xmlns="http://www.springframework.org/schema/batch">
+    	<listeners>
+	    	<listener ref="lgJobListener" />
+	    </listeners>
+    	<step id= "LgCreateFolderStructure"  next="lgCleanPreviousDayFiles"> 
+			<tasklet ref="LgCreateFolderStructureBean" />
+		</step>
+		<step id= "lgCleanPreviousDayFiles"  next="LgDataFeedTruncateAssociationHeadends"> 
+			<tasklet ref="lgCleanPreviousDayFilesBean" />
+		</step>
+		<step id="LgDataFeedTruncateAssociationHeadends" next="LgDataFeedTruncateAssociationSources">
+			<tasklet ref="lgHeadendTruncateAssociationBean" />
+		</step>
+		<step id="LgDataFeedTruncateAssociationSources" next="LgDataFeedTruncateAssociationProgram">
+		     <tasklet ref="lgSourceTruncateAssociationBean" />
+		</step>
+		<step id="LgDataFeedTruncateAssociationProgram" next="LgDataFeedTruncateAssociationProgramCopyCuttingPositions">
+		     <tasklet ref="lgProgramTruncateAssociationBean" />
+		</step>
+		<step id="LgDataFeedTruncateAssociationProgramCopyCuttingPositions" next="lgFindZipCodeOrHeadendBasedExtract">
+		     <tasklet ref="lgTruncateAssociationListOfProgramCopyCuttingPositionsBean" />
+		</step>
+		<step id="lgFindZipCodeOrHeadendBasedExtract">
+			<tasklet ref="lgFindZipCodeOrHeadendBasedExtractBean">
+				<listeners>
+					<listener ref="lgFindZipCodeOrHeadendBasedExtractListenerBean" />
+				</listeners>
+			</tasklet>
+			<next on="HEADEND" to="lgDataFeedHeadEndTopLevelFilterFromUsers" />
+			<next on="ZIPCODE" to="LgDataFeedHeadEndTopLevelFilter" />
+		</step>
+	   	<step id="LgDataFeedHeadEndTopLevelFilter" next="LgDataFeedSourceTopLevelFilter">
+			<tasklet ref ="lgHeadendAssociationBean" />
+		</step>
+		<step id="lgDataFeedHeadEndTopLevelFilterFromUsers" next="LgDataFeedSourceTopLevelFilter" >
+			<tasklet ref = "lgDataFeedHeadEndTopLevelFilterFromUsersBean" />   
+		</step>
+		<step id="LgDataFeedSourceTopLevelFilter" next="LgDataFeedProgramTopLevelFilter" >
+			<tasklet ref = "lgSourceAssociationBean" />   
+		</step>
+		<step id="LgDataFeedProgramTopLevelFilter" next="LgDataFeedProgramDeleteSeasonsFromTopLevelFilter" >
+			<tasklet ref = "lgProgramAssociationBean" />  
+		</step>
+		<step id="LgDataFeedProgramDeleteSeasonsFromTopLevelFilter" next="LgDataFeedListofProgramCopyCuttingPositionsTopLevelFilter" >
+			<tasklet ref = "lgProgramDeleteSeasonsAssociationBean" />  
+		</step>
+		<step id="LgDataFeedListofProgramCopyCuttingPositionsTopLevelFilter" next="LgDataFeedLoadProgramRatings" >
+			<tasklet ref = "lgListOfProgramCopyCuttingPositionsTopLevelFilterBean" />  
+		</step>	
+		<step id="LgDataFeedLoadProgramRatings" next="LgDataFeedLoadProgramColorTypes">
+            <tasklet ref="loadRatingNamesBean" />
+        </step>
+        <step id="LgDataFeedLoadProgramColorTypes" next="lgFilesGeneration">
+             <tasklet ref="loadProgramColorTypesBean" />
+        </step>
+        <!-- generate the files, split work up in multiple threads i.e <flow></flow>  --> 
+        <split id="lgFilesGeneration" task-executor="taskExecutor" next="lgCLUSourceFileCopy">
+		  <flow>
+		    <step id="lgMso">
+			  <tasklet>
+				  <chunk reader="lgMsoItemReader" processor="lgMsoProcessor" writer="lgMsoItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgZipCodes">
+		    	<tasklet ref="lgFindZipCodeOrHeadendBasedExtractBean">
+					<listeners>
+						<listener ref="lgFindZipCodeOrHeadendBasedExtractListenerBean" />
+					</listeners>
+				</tasklet>
+				<next on="HEADEND" to="lgZipcodesForCanada" />
+				<next on="ZIPCODE" to="lgZipcodesForUSA" />
+			</step>
+			<step id="lgZipcodesForUSA">
+			  <tasklet>
+				  <chunk reader="lgZipcodeForUSAItemReader" processor="lgZipcodesProcessor" writer="lgZipcodesItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		    <step id="lgZipcodesForCanada">
+			  <tasklet>
+				  <chunk reader="lgZipcodeForCanadaItemReader" processor="lgZipcodesProcessor" writer="lgZipcodesItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgHeadend">
+			  <tasklet>
+				  <chunk reader="lgHeadendItemReader" processor="lgHeadendProcessor" writer="lgHeadendItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgSource">
+			  <tasklet>
+				  <chunk reader="lgSourceItemReader" processor="lgSourceProcessor" writer="lgSourceItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgChannellineup">
+			  <tasklet>
+				  <chunk reader="lgChannellineupItemReader" processor="lgChannellineupProcessor" writer="lgChannellineupItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgProgramGenres">
+			  <tasklet>
+				  <chunk reader="lgProgramGenresItemReader" processor="lgProgramGenreProcessor" writer="lgProgramGenresItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgSourceGenres">
+			  <tasklet>
+				  <chunk reader="lgSourceGenresItemReader" processor="lgSourceGenreProcessor" writer="lgSourceGenreItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgProgramMovieRating">
+			  <tasklet>
+				  <chunk reader="lgProgramMovieRatingItemReader" processor="lgProgramMovieRatingProcessor" writer="lgProgramMovieRatingsItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgProgramTvRating">
+			  <tasklet>
+				  <chunk reader="lgProgramTvRatingItemReader" processor="lgProgramTvRatingProcessor" writer="lgProgramTvRatingsItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgSchedule">
+			  <tasklet>
+				  <chunk reader="lgScheduleItemReader" processor="lgScheduleProcessor" writer="lgScheduleItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		   <flow>
+		    <step id="lgProgram">
+			  <tasklet>
+				  <chunk reader="lgProgramItemReader" processor="lgProgramProcessor" writer="lgProgramItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		  <flow>
+		    <step id="lgProgramCredits">
+			  <tasklet>
+				  <chunk reader="lgProgramCreditsItemReader" processor="lgProgramCreditsProcessor" writer="lgProgramCreditsItemWriter" commit-interval="100000" />
+			  </tasklet>
+		    </step>
+		  </flow>
+		</split>
+		<step id="lgCLUSourceFileCopy" next="lgSSSetZipFileName">
+				<tasklet ref="lgCLUSourceFileCopyBean" />
+		</step>
+		<step id="lgSSSetZipFileName" next="lgCLUSetZipFileName">
+			<tasklet ref="lgSSSetZipFileNameBean" />
+		</step>
+		<step id="lgCLUSetZipFileName" next="lgCLUZipFileGenerator">
+			<tasklet ref="lgCLUSetZipFileNameBean" />
+		</step>
+        <step id="lgCLUZipFileGenerator" next="lgSSZipFileGenerator">
+			<tasklet ref="lgCLUCompressorTaskletBean" />
+		</step>
+		<step id="lgSSZipFileGenerator" next="LgCreateFolderStructureInFTP">
+			<tasklet ref="lgSSCompressorTaskletBean" />
+		</step>
+		<step id= "LgCreateFolderStructureInFTP"  next="lgCLUMoveZipFileToFTP"> 
+			<tasklet ref="LgCreateFolderStructureInFTPBean" />
+		</step>
+		<step id="lgCLUMoveZipFileToFTP" next="lgSSMoveZipFileToFTP">
+			<tasklet ref="lgCLUMoveZipFileToFTPBean" />
+		</step>
+		<step id="lgSSMoveZipFileToFTP" next="lgDropAssociationTables">
+			<tasklet ref="lgSSMoveZipFileToFTPBean" />
+		</step>
+		<split id="lgDropAssociationTables">
+			<flow>
+				<step id="lgHeadendDropAssociation">
+					<tasklet ref="lgHeadendDropAssociationBean" />
+				</step>
+			</flow>
+			<flow>
+				<step id="lgSourceDropAssociation">
+					<tasklet ref="lgSourceDropAssociationBean" />
+				</step>
+			</flow>
+			<flow>
+				<step id="lgProgramDropAssociation">
+					<tasklet ref="lgProgramDropAssociationBean" />
+				</step>
+			</flow>
+			<flow>
+				<step id="lgDropAssociationListOfProgramCopyCuttingPositions">
+					<tasklet ref="lgDropAssociationListOfProgramCopyCuttingPositionsBean" />
+				</step>
+			</flow>
+		</split>
+	</job>
+
+</beans>

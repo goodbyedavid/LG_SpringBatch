@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true"> 
+
+  <jmxConfigurator />
+  
+  <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>/opt/rovi_base/extracts/lgExtract/logs/lgExtract-app.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- rollover daily -->
+        <FileNamePattern>/opt/rovi_base/extracts/lgExtract/logs/lgExtract.%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+        <MaxHistory>7</MaxHistory>
+        <timeBasedFileNamingAndTriggeringPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>50MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%date [%thread] %-5level %logger{36} [%file:%line] - %msg%n </Pattern>
+    </encoder>
+  </appender> 
+  
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{5} - %msg%n</pattern>
+    </encoder>
+  </appender> 
+  
+  <logger name="com.rovicorp" level="DEBUG" additivity="false">
+   <appender-ref ref="ROLLINGFILE" />
+   <appender-ref ref="STDOUT" />
+  </logger>
+ 
+  <root level="INFO"> 
+    <appender-ref ref="ROLLINGFILE" />
+  </root> 
+   
+</configuration>

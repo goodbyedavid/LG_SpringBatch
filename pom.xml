@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.rovicorp.batch</groupId>
+	<artifactId>LGExtract</artifactId>
+	<packaging>jar</packaging>
+	<name>LGExtract</name>
+	<version>1.0.0-SNAPSHOT</version>
+	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<def-core-libs.version>1.0.0-SNAPSHOT</def-core-libs.version>
+		<maven.compiler.version>1.7</maven.compiler.version>
+        <sonar.version>2.1</sonar.version>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.rovicorp.batch</groupId>
+			<artifactId>extract-corelibs</artifactId>
+			<version>${def-core-libs.version}</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+        <finalName>LGExtract</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<!-- Configures the used assembly descriptor -->
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				  <executions>
+                    <execution>
+                    <phase>package</phase>
+                    <goals>
+                       <goal>single</goal>
+                    </goals>
+                  </execution>
+                   </executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<configuration>
+							<showDeprecation>true</showDeprecation>
+							<showWarnings>true</showWarnings>
+							<compilerArguments>
+								<source>${maven.compiler.version}</source>
+								<target>${maven.compiler.version}</target>
+							</compilerArguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<configuration>
+							<showDeprecation>true</showDeprecation>
+							<showWarnings>true</showWarnings>
+							<compilerArguments>
+								<source>${maven.compiler.version}</source>
+								<target>${maven.compiler.version}</target>
+							</compilerArguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+				<executions>
+					<execution>
+						<id>enforce-java</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>${maven.compiler.version}</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- The configuration of Maven Jar plugin that packages our application 
+				into a jar file. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<!-- Configures the created archive -->
+					<archive>
+						<!-- Configures the content of the created manifest -->
+						<manifest>
+							<!-- Adds the classpath to the created manifest -->
+							<addClasspath>true</addClasspath>
+							<!-- Specifies that all dependencies of our application are found 
+								from the lib directory. -->
+							<classpathPrefix>lib/</classpathPrefix>
+							<!-- Configures the main class of the application -->
+							<mainClass>com.rovicorp.process.LGExtract</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+            <plugin>
+    			<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>sonar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+		<repository>
+			<id>dsg-extract-framework-release</id>
+			<name>Corporate Extract Framework Repository</name>
+			<url>http://mvnrepo/artifactory/dsg-extract-framework-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>dsg-extract-framework-snapshot</id>
+			<url>http://mvnrepo/artifactory/dsg-extract-framework-snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>dsg-extract-framework-release</id>
+			<name>Corporate Extract Framework Repository</name>
+			<url>http://mvnrepo/artifactory/dsg-extract-framework-release</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>dsg-extract-framework-snapshot</id>
+			<name>Corporate Extract Framework Snapshots</name>
+			<url>http://mvnrepo/artifactory/dsg-extract-framework-snapshot</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repository</id>
+			<name>Corporate Repository</name>
+			<url>http://mvnrepo/artifactory/repo1</url>
+		</pluginRepository>
+	</pluginRepositories>
+</project>
